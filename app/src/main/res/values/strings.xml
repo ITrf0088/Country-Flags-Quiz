@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Country flags quiz</string>
+    <string name="quiz_app">Quiz App!</string>
+    <string name="welcome">Welcome</string>
+    <string name="entry_name">Please entry your name.</string>
+    <string name="e_g_name">e.g John</string>
+    <string name="start">Start</string>
 </resources>
