@@ -26,7 +26,7 @@ class Generator {
     }
 
     private fun up(index: Int) {
-        if (count < 4 && index < Country.items.size) {
+        if (count < 4 && index < Country.size) {
             if (count != rightIndex) {
                 answers[count] = Country.items[index].first
             }

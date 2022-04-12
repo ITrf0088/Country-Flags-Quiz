@@ -15,5 +15,6 @@ object Country {
         "Kuwait" to R.drawable.kuwait,
         "New Zealand" to R.drawable.new_zealand
     )
+    val size = items.size
 
 }
