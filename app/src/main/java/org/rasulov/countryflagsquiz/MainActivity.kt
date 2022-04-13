@@ -3,9 +3,11 @@ package org.rasulov.countryflagsquiz
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatEditText
+import kotlin.math.log10
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,9 @@ class MainActivity : AppCompatActivity() {
             edtName.text?.let {
                 if (it.trim().isNotEmpty()) {
                     val intent = Intent(this, QuestionActivity::class.java)
+                    intent.putExtra("name", it.trim().toString())
                     startActivity(intent)
+                    finish()
                 }
             }
 

@@ -1,8 +1,10 @@
 package org.rasulov.countryflagsquiz
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -12,48 +14,39 @@ import org.rasulov.countryflagsquiz.question.TestFactory
 
 class QuestionActivity : AppCompatActivity() {
 
+    private var name: String = ""
+    private var score: Int = 0
     private var isFinished: Boolean = false
     private var canSubmit: Boolean = false
+    private val nonSelect = -1
+    private var selected: Int = nonSelect
+
     private var imgFlag: ImageView? = null
     private var progressBar: ProgressBar? = null
     private var tvProgress: TextView? = null
     private var tvsAnswers: MutableList<TextView> = mutableListOf()
     private var btnSubmit: Button? = null
 
-    private var selected: Int = -1
+
     private var question: Question? = null
     private var testFactory: TestFactory = TestFactory()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question)
+
+        name = intent.getStringExtra("name") ?: ""
         testFactory = TestFactory()
+
         imgFlag = findViewById(R.id.img_flag)
         progressBar = findViewById(R.id.bar_progress)
         tvProgress = findViewById(R.id.tv_progress)
 
-        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_one).also {
-            it.setOnClickListener {
-                setAppearanceToTVs(0)
-            }
-        })
-        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_two).also {
-            it.setOnClickListener {
-                setAppearanceToTVs(1)
-            }
-        })
-        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_three).also {
-            it.setOnClickListener {
-                setAppearanceToTVs(2)
-            }
-        })
-        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_four).also {
-            it.setOnClickListener {
-                setAppearanceToTVs(3)
-            }
-        })
-        btnSubmit =
-            findViewById<Button>(R.id.btn_submit).also { it.setOnClickListener { click() } }
+        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_one).also { it.setOnClickListener { setAppearanceToTVs(0) } })
+        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_two).also { it.setOnClickListener { setAppearanceToTVs(1) } })
+        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_three).also { it.setOnClickListener { setAppearanceToTVs(2) } })
+        tvsAnswers.add(findViewById<TextView>(R.id.tv_option_four).also { it.setOnClickListener { setAppearanceToTVs(3) } })
+        btnSubmit = findViewById<Button>(R.id.btn_submit).also { it.setOnClickListener { click() } }
 
         if (savedInstanceState == null) {
             setQuestion()
@@ -100,7 +93,15 @@ class QuestionActivity : AppCompatActivity() {
     }
 
     private fun click() {
-        if (isFinished) return
+        if (isFinished) {
+            val intent = Intent(this, FinalActivity::class.java)
+            intent.putExtra("name", name)
+            intent.putExtra("score", score)
+            intent.putExtra("quantity", Country.size)
+            startActivity(intent)
+            finish()
+        }
+
         if (canSubmit) {
             submit()
         } else {
@@ -109,7 +110,7 @@ class QuestionActivity : AppCompatActivity() {
     }
 
     private fun submit() {
-        if (selected != -1) {
+        if (selected != nonSelect) {
             checkAnswer()
             canSubmit = false
             if (!testFactory.hasNext()) {
@@ -124,7 +125,7 @@ class QuestionActivity : AppCompatActivity() {
     private fun next() {
         btnSubmit?.text = "Submit"
         canSubmit = true
-        setAppearanceToTVs(-1)
+        setAppearanceToTVs(nonSelect)
         setQuestion()
     }
 
@@ -133,7 +134,7 @@ class QuestionActivity : AppCompatActivity() {
             tvsAnswers[selected].background =
                 ContextCompat.getDrawable(this, R.drawable.wrong_option_bg)
             tvsAnswers[selected].setTextColor(ContextCompat.getColor(this, R.color.white))
-        }
+        } else score++
         question?.rightIndex?.let {
             tvsAnswers[it].background =
                 ContextCompat.getDrawable(this, R.drawable.correct_option_bg)

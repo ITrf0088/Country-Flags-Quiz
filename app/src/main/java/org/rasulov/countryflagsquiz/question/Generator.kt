@@ -15,8 +15,6 @@ class Generator {
         val name = country.first
         setAnswers(index)
         answers[rightIndex] = name
-        Log.d("it0088", "rightIndex: $rightIndex")
-        answers.forEach { Log.d("it0088", "$it ") }
         return Question(flag, rightIndex, answers)
     }
 

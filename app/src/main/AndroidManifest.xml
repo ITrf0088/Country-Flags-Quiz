@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CountryFlagsQuiz">
         <activity
+            android:name=".FinalActivity"
+            android:exported="true" />
+        <activity
             android:name=".QuestionActivity"
             android:exported="true"
             android:screenOrientation="portrait" />

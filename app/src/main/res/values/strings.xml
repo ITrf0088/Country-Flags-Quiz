@@ -8,4 +8,7 @@
     <string name="belong_to">What country does this flag belong to?</string>
     <string name="quiz_image">quiz image</string>
     <string name="submit">submit</string>
+    <string name="result">Result</string>
+    <string name="congrate">Hey, Congratulations!</string>
+    <string name="finish">Finish</string>
 </resources>
